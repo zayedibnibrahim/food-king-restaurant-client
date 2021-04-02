@@ -1,0 +1,10 @@
+.buy-now-btn{
+    border: none;
+    color: #fff;
+    background-color: rebeccapurple;
+    padding: 15px;
+    border-radius: 4px;
+}
+.price h5{
+    color: black;
+}

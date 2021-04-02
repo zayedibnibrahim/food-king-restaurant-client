@@ -1,0 +1,15 @@
+.nav-menu a{
+    text-decoration: none;
+    color: rgb(26, 24, 49);
+    font-size: 16px;
+    padding: 10px 30px;
+    font-weight: 600;
+}
+.nav-menu button{
+    background-color: orangered;
+    border: none;
+    color: #fff;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 4px;
+}
