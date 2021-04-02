@@ -15,7 +15,7 @@ const Admin = () => {
             weight: data.weight,
             image: imageUrl
         }
-        axios.post('http://localhost:42000/addproductdb', toBeAddedProductData)
+        axios.post('https://apple-sundae-00069.herokuapp.com/addproductdb', toBeAddedProductData)
         .then(result => {
             if(result){
                 
