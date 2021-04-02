@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { addToDatabaseCart, getDatabaseCart } from '../../utility/databaseManager';
 import FoodBox from '../FoodBox/FoodBox';
 import './Home.css'
 
@@ -9,6 +10,18 @@ const Home = () => {
         axios.get('https://apple-sundae-00069.herokuapp.com/allproduct')
             .then(res => setProducts(res.data))
     }, [])
+
+    //Cart start
+    
+
+    //Cart End
+
+    //Buy Now
+    const productClickHandler = (product) => {
+        const toBeAdded = product._id;
+        let count = 1;
+        
+    }
     return (
         <div className="container food-items d-grid">
             {
@@ -17,7 +30,7 @@ const Home = () => {
                 </div>
             }
             {
-                products.map(product => <FoodBox eachProduct={product}></FoodBox>)
+                products.map(product => <FoodBox key={product._id} eachProduct={product} clickHandler={productClickHandler}></FoodBox>)
             }
         </div>
     );

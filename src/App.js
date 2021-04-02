@@ -11,32 +11,39 @@ import Orders from './Components/Orders/Orders';
 import Admin from './Components/Admin/Admin';
 import Login from './Components/Login/Login';
 import EditProduct from './Components/Admin/EditProduct';
+import { createContext, useState } from 'react';
+import PrivateRoute from './Components/PriveteRoute/PrivateRoute';
+
+export const userContext = createContext();
 
 function App() {
+  const [loggedInUser, setLoggedInUser] = useState({})
   return (
-    <Router>
-      <Header></Header>
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/orders">
-          <Orders></Orders>
-        </Route>
-        <Route path="/admin">
-          <Admin></Admin>
-        </Route>
-        <Route path="/editProduct">
-          <EditProduct></EditProduct>
-        </Route>
-        <Route path="/login">
-          <Login></Login>
-        </Route>
-        <Route path="*">
-          <NotFoundPage></NotFoundPage>
-        </Route>
-      </Switch>
-    </Router>
+    <userContext.Provider value={[loggedInUser, setLoggedInUser]}>
+      <Router>
+        <Header></Header>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/orders">
+            <Orders></Orders>
+          </Route>
+          <PrivateRoute path="/admin">
+            <Admin></Admin>
+          </PrivateRoute>
+          <PrivateRoute path="/editProduct">
+            <EditProduct></EditProduct>
+          </PrivateRoute>
+          <Route path="/login">
+            <Login></Login>
+          </Route>
+          <Route path="*">
+            <NotFoundPage></NotFoundPage>
+          </Route>
+        </Switch>
+      </Router>
+    </userContext.Provider>
   );
 }
 

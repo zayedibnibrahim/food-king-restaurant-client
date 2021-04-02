@@ -61,14 +61,14 @@ const Admin = () => {
                                     {errors.exampleRequired && <span>This field is required</span>}
                                 </div>
                                 <div className="col-md-6">
-                                    <input type="number" {...register("weight", { required: true })} placeholder="Weight" />
+                                    <input type="number" {...register("weight", { required: true })} placeholder="Weight(gm)" />
                                     {errors.exampleRequired && <span>This field is required</span>}
                                 </div>
                             </div>
 
                             <div className="row">
                                 <div className="col-md-6">
-                                    <input type="number" {...register("price", { required: true })} placeholder="Price" />
+                                    <input type="number" {...register("price", { required: true })} placeholder="Price(৳)" />
                                     {errors.exampleRequired && <span>This field is required</span>}
                                 </div>
                                 <div className="col-md-6">

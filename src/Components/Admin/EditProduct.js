@@ -4,6 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './EditProduct.css'
+
 const EditProduct = () => {
     const [products, setProducts] = useState([])
     useEffect(() => {
@@ -11,14 +12,14 @@ const EditProduct = () => {
             .then(res => setProducts(res.data))
     }, [])
 
-    const deleteHandler = (event, id) => {
-        axios.delete(`https://apple-sundae-00069.herokuapp.com/delete+${id}`)
-        .then(res => {
-            if(res){
-                event.target.parentNode.parentNode.parentNode.style.display = 'none';
-            }
-        })
-
+    const deleteHandler = (id) => {
+        axios.delete(`https://apple-sundae-00069.herokuapp.com/delete/${id}`)
+            .then(res => {
+                if (res) {
+                    console.log('Deleted')
+                    alert('Item Deleted Successfully')
+                }
+            })
     }
     return (
         <div className="container add-product">
@@ -54,10 +55,10 @@ const EditProduct = () => {
                                     </div>
                                 }
                                 {
-                                    products.map(product => <tr>
+                                    products.map(product => <tr key={product._id}>
                                         <td>{product.name}</td>
-                                        <td>{product.weight}</td>
-                                        <td>{product.price}</td>
+                                        <td>{product.weight}gm</td>
+                                        <td>{product.price}৳</td>
                                         <td>
                                             <button><FontAwesomeIcon icon={faEdit} /></button>
                                             <button onClick={() => deleteHandler(product._id)}><FontAwesomeIcon icon={faTrashAlt} /></button>

@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './Header.css'
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.png'
+import { userContext } from '../../App';
 const Header = () => {
+    const [loggedInUser, setLoggedInUser] = useContext(userContext);
+    const logoutHandler = () => {
+        setLoggedInUser({});
+    }
     return (
         <div className="container pt-3 pb-5">
             <div className="row">
@@ -13,9 +18,12 @@ const Header = () => {
                     <Link to='/'>Home</Link>
                     <Link to='/orders'>Orders</Link>
                     <Link to='/admin'>Admin</Link>
-                    <Link to='/login'>
-                        <button>Log In</button>
-                    </Link>
+                    {
+                        loggedInUser.email ? <div><img src={loggedInUser.photo} alt=""/> <span onClick={logoutHandler} className="logout-btn">| Logout</span></div> : <Link to='/login'>
+                            <button>Log In</button>
+                        </Link>
+                    }
+
                 </div>
             </div>
         </div>
