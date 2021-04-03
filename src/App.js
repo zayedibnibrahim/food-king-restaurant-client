@@ -13,36 +13,44 @@ import Login from './Components/Login/Login';
 import EditProduct from './Components/Admin/EditProduct';
 import { createContext, useState } from 'react';
 import PrivateRoute from './Components/PriveteRoute/PrivateRoute';
+import Shipment from './Components/Shipment/Shipment';
+import ThankYouPage from './Components/ThankYouPage/ThankYouPage';
 
 export const userContext = createContext();
-
 function App() {
   const [loggedInUser, setLoggedInUser] = useState({})
+
   return (
     <userContext.Provider value={[loggedInUser, setLoggedInUser]}>
-      <Router>
-        <Header></Header>
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/orders">
-            <Orders></Orders>
-          </Route>
-          <PrivateRoute path="/admin">
-            <Admin></Admin>
-          </PrivateRoute>
-          <PrivateRoute path="/editProduct">
-            <EditProduct></EditProduct>
-          </PrivateRoute>
-          <Route path="/login">
-            <Login></Login>
-          </Route>
-          <Route path="*">
-            <NotFoundPage></NotFoundPage>
-          </Route>
-        </Switch>
-      </Router>
+        <Router>
+          <Header></Header>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/orders">
+              <Orders></Orders>
+            </Route>
+            <PrivateRoute path="/admin">
+              <Admin></Admin>
+            </PrivateRoute>
+            <PrivateRoute path="/editProduct">
+              <EditProduct></EditProduct>
+            </PrivateRoute>
+            <Route path="/login">
+              <Login></Login>
+            </Route>
+            <PrivateRoute path="/shipment">
+              <Shipment></Shipment>
+            </PrivateRoute>
+            <PrivateRoute path="/thankyoupage">
+              <ThankYouPage></ThankYouPage>
+            </PrivateRoute>
+            <Route path="*">
+              <NotFoundPage></NotFoundPage>
+            </Route>
+          </Switch>
+        </Router>
     </userContext.Provider>
   );
 }

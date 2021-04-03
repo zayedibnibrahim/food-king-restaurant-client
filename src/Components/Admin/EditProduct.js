@@ -6,17 +6,17 @@ import { Link } from 'react-router-dom';
 import './EditProduct.css'
 
 const EditProduct = () => {
+
     const [products, setProducts] = useState([])
     useEffect(() => {
         axios.get('https://apple-sundae-00069.herokuapp.com/allproduct')
             .then(res => setProducts(res.data))
     }, [])
 
-    const deleteHandler = (id) => {
-        axios.delete(`https://apple-sundae-00069.herokuapp.com/delete/${id}`)
+    const deleteHandler = (key) => {
+        axios.delete(`https://apple-sundae-00069.herokuapp.com/delete/${key}`)
             .then(res => {
                 if (res) {
-                    console.log('Deleted')
                     alert('Item Deleted Successfully')
                 }
             })
@@ -61,7 +61,7 @@ const EditProduct = () => {
                                         <td>{product.price}৳</td>
                                         <td>
                                             <button><FontAwesomeIcon icon={faEdit} /></button>
-                                            <button onClick={() => deleteHandler(product._id)}><FontAwesomeIcon icon={faTrashAlt} /></button>
+                                            <button onClick={() => deleteHandler(product.key)}><FontAwesomeIcon icon={faTrashAlt} /></button>
                                         </td>
                                     </tr>)
                                 }

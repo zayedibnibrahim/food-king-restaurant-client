@@ -10,7 +10,7 @@ const FoodBox = (props) => {
             </div>
             <div className="card-footer">
                 <div className="price d-flex justify-content-between align-items-center">
-                    <h5>${price}</h5>
+                    <h5>{price}৳</h5>
                     <button onClick={() => props.clickHandler(props.eachProduct)} className="buy-now-btn">Buy Now</button>
                 </div>
             </div>

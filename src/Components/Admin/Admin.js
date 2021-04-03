@@ -13,21 +13,21 @@ const Admin = () => {
             name: data.name,
             price: data.price,
             weight: data.weight,
-            image: imageUrl
+            image: imageUrl,
+            key: Math.floor(Math.random() * 100000) +""
         }
         axios.post('https://apple-sundae-00069.herokuapp.com/addproductdb', toBeAddedProductData)
-        .then(result => {
-            if(result){
-                
-                alert('Product Added Successfully.')
-            }
-        })
+            .then(result => {
+                if (result) {
+                    alert('Product Added Successfully.')
+                    
+                }
+            })
     };
 
     //image handler
-    
+
     const uploadImageHandler = e => {
-        console.log(e.target.files[0])
         const imageData = new FormData();
         imageData.set('key', '41e7c876286549d302ce964e69418b3a');
         imageData.append('image', e.target.files[0]);
@@ -58,22 +58,21 @@ const Admin = () => {
                             <div className="row">
                                 <div className="col-md-6">
                                     <input type="text" {...register("name", { required: true })} placeholder="Product Name" />
-                                    {errors.exampleRequired && <span>This field is required</span>}
+                                    {errors.name && <span>This field is required</span>}
                                 </div>
                                 <div className="col-md-6">
                                     <input type="number" {...register("weight", { required: true })} placeholder="Weight(gm)" />
-                                    {errors.exampleRequired && <span>This field is required</span>}
+                                    {errors.weight && <span>This field is required</span>}
                                 </div>
                             </div>
-
                             <div className="row">
                                 <div className="col-md-6">
                                     <input type="number" {...register("price", { required: true })} placeholder="Price(৳)" />
-                                    {errors.exampleRequired && <span>This field is required</span>}
+                                    {errors.price && <span>This field is required</span>}
                                 </div>
                                 <div className="col-md-6">
                                     <input type="file" {...register("image", { required: true })} onChange={uploadImageHandler} />
-                                    {errors.exampleRequired && <span>This field is required</span>}
+                                    {errors.image && <span>This field is required</span>}
                                 </div>
                             </div>
                             <div className="row">

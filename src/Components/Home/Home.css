@@ -2,3 +2,12 @@
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 30px;
 }
+@media (max-width: 512px){
+    .food-items{
+        grid-template-columns: repeat(1, 1fr);
+    }
+    .nav-menu a{
+        padding-left: 7px !important;
+        padding-right: 7px !important;
+    }
+}
