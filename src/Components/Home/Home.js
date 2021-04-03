@@ -20,7 +20,12 @@ const Home = () => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
 
-        axios.post('https://apple-sundae-00069.herokuapp.com/productsByKeys', productKeys)
+        fetch('https://apple-sundae-00069.herokuapp.com/productsByKeys', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(productKeys)
+        })
+            .then(res => res.json())
             .then(data => {
                 if (data.length > 0) {
                     const previousCart = productKeys.map(pdKey => {

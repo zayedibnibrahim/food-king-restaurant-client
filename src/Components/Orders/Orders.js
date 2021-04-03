@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { getDatabaseCart } from '../../utility/databaseManager';
 import './Orders.css'
 import { useHistory } from 'react-router';
-import axios from 'axios';
 const Orders = () => {
     
     //Handle Proceed
@@ -21,7 +20,12 @@ const Orders = () => {
     useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        axios.post('https://apple-sundae-00069.herokuapp.com/productsByKeys', productKeys)
+        fetch('https://apple-sundae-00069.herokuapp.com/productsByKeys', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(productKeys)
+        })
+            .then(res => res.json())
             .then(data => {
                 const cartProducts = productKeys.map(key => {
                     const product = data.find(pd => pd.key === key);
@@ -35,6 +39,11 @@ const Orders = () => {
         <div className="container">
             <h2>Checkout</h2>
             <div className="container orders">
+                {
+                    orders.length === 0 && <div className="spinner-border text-warning" role="status">
+                    <span className="visually-hidden"></span>
+                </div>
+                }
                 <table>
                     <thead>
                         <tr>
