@@ -39,11 +39,6 @@ const Orders = () => {
         <div className="container">
             <h2>Checkout</h2>
             <div className="container orders">
-                {
-                    orders.length === 0 && <div className="spinner-border text-warning" role="status">
-                    <span className="visually-hidden"></span>
-                </div>
-                }
                 <table>
                     <thead>
                         <tr>
