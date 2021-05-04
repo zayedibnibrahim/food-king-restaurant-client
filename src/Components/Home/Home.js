@@ -16,11 +16,12 @@ const Home = () => {
 
     const [cart, setCart] = useState([]);
 
-    useEffect(() => {
+    const incomingItem = async () => {
+
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
 
-        fetch('https://apple-sundae-00069.herokuapp.com/productsByKeys', {
+        await fetch('https://apple-sundae-00069.herokuapp.com/productsByKeys', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(productKeys)
@@ -38,6 +39,12 @@ const Home = () => {
                     setCart(previousCart)
                 }
             })
+    }
+
+    useEffect(() => {
+
+        incomingItem();
+
     }, [])
 
     //Cart End
