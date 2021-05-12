@@ -3,7 +3,7 @@ import { getDatabaseCart } from '../../utility/databaseManager';
 import './Orders.css'
 import { useHistory } from 'react-router';
 const Orders = () => {
-    
+
     //Handle Proceed
     const history = useHistory()
     const handleProceed = () => {
@@ -57,7 +57,7 @@ const Orders = () => {
                         }
                     </tbody>
                     <tfoot>
-                        <tr style={{borderTop : '2px solid #000'}}>
+                        <tr style={{ borderTop: '2px solid #000' }}>
                             <th>Total Price :</th>
                             <td></td>
 

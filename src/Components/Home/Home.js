@@ -1,10 +1,15 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { addToDatabaseCart, getDatabaseCart } from '../../utility/databaseManager';
+import React, { useContext, useEffect, useState } from 'react';
+import { minCartContext, minCarBtnContext } from '../../App';
+import { addToDatabaseCart, getDatabaseCart, removeFromDatabaseCart } from '../../utility/databaseManager';
 import FoodBox from '../FoodBox/FoodBox';
-import './Home.css'
+import './Home.css';
 
 const Home = () => {
+
+    const [openMinCart, setOpenMinCart] = useContext(minCartContext);
+    const [minCartBtnCount, setMinCartBtnCount] = useContext(minCarBtnContext);
+
     //Show data at home
     const [products, setProducts] = useState([])
     useEffect(() => {
@@ -12,16 +17,16 @@ const Home = () => {
             .then(res => setProducts(res.data))
     }, [])
 
-    //Cart start
+
+    //LocalStorage start
 
     const [cart, setCart] = useState([]);
-
-    const incomingItem = async () => {
-
+    setMinCartBtnCount(cart.length)
+    useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
 
-        await fetch('https://apple-sundae-00069.herokuapp.com/productsByKeys', {
+        fetch('https://apple-sundae-00069.herokuapp.com/productsByKeys', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(productKeys)
@@ -35,53 +40,92 @@ const Home = () => {
                         getProduct.quantity = savedCart[pdKey];
                         return getProduct;
                     })
-
                     setCart(previousCart)
+                    setMinCartBtnCount(previousCart.length)
                 }
             })
-    }
-
-    useEffect(() => {
-
-        incomingItem();
 
     }, [])
 
-    //Cart End
+    //LocalStorage End
 
-    //Buy Now
-    const productClickHandler = (product) => {
+    //Add To Cart
+    const onAdd = (product) => {
         const toBeAdded = product.key;
         const sameProduct = cart.find(pd => pd.key === toBeAdded);
         let count = 1;
-        let newCart;
-        const savedCart = getDatabaseCart();
+        // let newCart;
 
         if (sameProduct) {
+            // count = sameProduct.quantity + 1;
+            // sameProduct.quantity = count;
+            // newCart = [...cart, sameProduct];
+            // setCart(newCart);
+            setCart(
+                cart.map(pd => pd.key === toBeAdded ? { ...sameProduct, quantity: sameProduct.quantity + 1 } : pd)
+            )
             count = sameProduct.quantity + 1;
-            sameProduct.quantity = count;
-            const others = cart.filter(pd => pd.key !== toBeAdded);
-            newCart = [...others, sameProduct];
-
+            addToDatabaseCart(toBeAdded, count)
         }
         else {
-            product.quantity = 1;
-            newCart = [...cart, product];
+            // product.quantity = 1;
+            // newCart = [...cart, product];
+            // setCart(newCart);
+            setCart(
+                [...cart, { ...product, quantity: 1 }]
+            )
+            addToDatabaseCart(toBeAdded, count);
         }
-        setCart(newCart);
-        addToDatabaseCart(product.key, count);
-
     }
+    //Remove FroM Cart
+    const onRemove = (product) => {
+        const sameProduct = cart.find(pd => pd.key === product.key);
+        if (sameProduct.quantity === 1) {
+            setCart(cart.filter(pd => pd.key !== product.key));
+            removeFromDatabaseCart(product.key)
+        } else {
+            setCart(
+                cart.map(pd =>
+                    pd.key === product.key ? { ...sameProduct, quantity: sameProduct.quantity - 1 } : pd
+                )
+            );
+            const count = sameProduct.quantity - 1;
+            addToDatabaseCart(product.key, count)
+        }
+    };
+
     return (
-        <div className="container food-items d-grid">
-            {
-                products.length === 0 && <div className="spinner-border text-warning" role="status">
-                    <span className="visually-hidden"></span>
+        <div className="container">
+            <div className="row">
+                <div className={`${openMinCart ? 'col-md-9' : 'col-md-12'} food-items d-grid rounded`}>
+                    {
+                        products.length === 0 && <div className="spinner-border text-warning" role="status">
+                            <span className="visually-hidden"></span>
+                        </div>
+                    }
+                    {
+                        products.map(product => <FoodBox key={product._id} eachProduct={product} clickHandler={onAdd}></FoodBox>)
+                    }
                 </div>
-            }
-            {
-                products.map(product => <FoodBox key={product._id} eachProduct={product} clickHandler={productClickHandler}></FoodBox>)
-            }
+                <div className={`${openMinCart ? 'col-md-3' : 'd-none'}`} style={{ borderLeft: "1px solid #CECECE" }}>
+                    {
+                        cart.length === 0 && <p>Cart is empty</p>
+                    }
+                    {
+                        cart.map((pd, index) =>
+                            <div key={index + 1} className="rounded mb-1 cart-items">
+                                <div>
+                                    <p><b>{index + 1}){pd.name}</b></p>
+                                </div>
+                                <div className="d-flex">
+                                    <button onClick={() => onRemove(pd)} className="btn btn-danger onRemove">-</button>
+                                    <span>{pd.quantity}</span>
+                                    <button onClick={() => onAdd(pd)} className="btn btn-primary onAdd">+</button>
+                                </div>
+                            </div>)
+                    }
+                </div>
+            </div>
         </div>
     );
 };

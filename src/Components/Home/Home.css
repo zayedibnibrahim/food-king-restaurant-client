@@ -1,6 +1,9 @@
 .food-items{
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 30px;
+    transition: .5s all;
+    background-color: #dff9fb;
+    padding: 10px;
 }
 @media (max-width: 512px){
     .food-items{
@@ -10,4 +13,11 @@
         padding-left: 7px !important;
         padding-right: 7px !important;
     }
+}
+.onAdd, .onRemove{
+    margin: 0 10px;
+}
+.cart-items{
+    background-color: #dff9fb;
+    padding: 10px;
 }

@@ -17,11 +17,17 @@ import Shipment from './Components/Shipment/Shipment';
 import ThankYouPage from './Components/ThankYouPage/ThankYouPage';
 
 export const userContext = createContext();
+export const minCartContext = createContext();
+export const minCarBtnContext = createContext();
 function App() {
   const [loggedInUser, setLoggedInUser] = useState({})
+  const [openMinCart, setOpenMinCart] = useState(false)
+  const [minCartBtnCount, setMinCartBtnCount] = useState([])
 
   return (
     <userContext.Provider value={[loggedInUser, setLoggedInUser]}>
+      <minCartContext.Provider value={[openMinCart, setOpenMinCart]}>
+      <minCarBtnContext.Provider value={[minCartBtnCount, setMinCartBtnCount]}>
         <Router>
           <Header></Header>
           <Switch>
@@ -51,6 +57,8 @@ function App() {
             </Route>
           </Switch>
         </Router>
+        </minCarBtnContext.Provider>
+      </minCartContext.Provider>
     </userContext.Provider>
   );
 }
