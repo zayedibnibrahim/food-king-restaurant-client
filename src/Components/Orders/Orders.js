@@ -10,6 +10,7 @@ const Orders = () => {
         history.push('/shipment')
     }
     const [orders, setOrder] = useState([]);
+
     //Total Count
     let total = 0;
     for (let i = 0; i < orders.length; i++) {
@@ -49,6 +50,11 @@ const Orders = () => {
                     </thead>
                     <tbody>
                         {
+                            orders.length === 0 && <div>
+                                <span><p><b>Cart is empty</b></p></span>
+                            </div>
+                        }
+                        {
                             orders.map(order => <tr key={order.key}>
                                 <td>{order.name}</td>
                                 <td>{order.quantity}</td>
@@ -68,9 +74,12 @@ const Orders = () => {
                     </tfoot>
                 </table>
             </div>
-            <div>
+            {
+                orders.length > 0  && <div>
                 <button onClick={handleProceed} className="btn btn-primary float-end">Proceed Checkout</button>
             </div>
+            }
+            
         </div>
     );
 };

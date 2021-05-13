@@ -21,6 +21,7 @@ const Home = () => {
     //LocalStorage start
 
     const [cart, setCart] = useState([]);
+    console.log(cart)
     setMinCartBtnCount(cart.length)
     useEffect(() => {
         const savedCart = getDatabaseCart();
@@ -48,6 +49,17 @@ const Home = () => {
     }, [])
 
     //LocalStorage End
+
+    //Total Count
+    let total = 0;
+    if (cart.length > 0) {
+        for (let i = 0; i < cart.length; i++) {
+            const fProduct = cart[i];
+
+            total = total + fProduct.price * fProduct.quantity || 1;
+        }
+    }
+
 
     //Add To Cart
     const onAdd = (product) => {
@@ -115,15 +127,24 @@ const Home = () => {
                         cart.map((pd, index) =>
                             <div key={index + 1} className="rounded mb-1 cart-items">
                                 <div>
-                                    <p><b>{index + 1}){pd.name}</b></p>
+                                    <p><b>{index + 1}. {pd.name}</b></p>
                                 </div>
-                                <div className="d-flex">
+                                <div className="d-flex p-1 rounded align-items-center" style={{backgroundColor: "#c7ecee"}}>
                                     <button onClick={() => onRemove(pd)} className="btn btn-danger onRemove">-</button>
-                                    <span>{pd.quantity}</span>
+                                    <span>{pd.quantity} X {pd.price}</span>
                                     <button onClick={() => onAdd(pd)} className="btn btn-primary onAdd">+</button>
+                                    <span> = {Math.round(pd.price * pd.quantity).toFixed(2)}৳</span>
                                 </div>
                             </div>)
                     }
+                    <div className="d-flex justify-content-between">
+                        <div>
+                            <p><b>Total: </b></p>
+                        </div>
+                        <div>
+                            <p><b>{total.toFixed(2)}৳</b></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
