@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import { minCartContext, minCarBtnContext } from '../../App';
 import { addToDatabaseCart, getDatabaseCart, removeFromDatabaseCart } from '../../utility/databaseManager';
 import FoodBox from '../FoodBox/FoodBox';
@@ -49,7 +50,11 @@ const Home = () => {
     }, [])
 
     //LocalStorage End
-
+    //Handle Order
+    const history = useHistory()
+    const handleOrder = () => {
+        history.push('/orders')
+    }
     //Total Count
     let total = 0;
     if (cart.length > 0) {
@@ -129,7 +134,7 @@ const Home = () => {
                                 <div>
                                     <p><b>{index + 1}. {pd.name}</b></p>
                                 </div>
-                                <div className="d-flex p-1 rounded align-items-center" style={{backgroundColor: "#c7ecee"}}>
+                                <div className="d-flex p-1 rounded align-items-center" style={{ backgroundColor: "#c7ecee" }}>
                                     <button onClick={() => onRemove(pd)} className="btn btn-danger onRemove">-</button>
                                     <span>{pd.quantity} X {pd.price}</span>
                                     <button onClick={() => onAdd(pd)} className="btn btn-primary onAdd">+</button>
@@ -145,6 +150,11 @@ const Home = () => {
                             <p><b>{total.toFixed(2)}৳</b></p>
                         </div>
                     </div>
+                    {
+                        cart.length > 0 && <div>
+                            <button onClick={handleOrder} className="btn btn-primary float-end">Order Now</button>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
