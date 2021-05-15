@@ -7,7 +7,7 @@ import FoodBox from '../FoodBox/FoodBox';
 import './Home.css';
 
 const Home = () => {
-    //Omg what is this
+    
     const [openMinCart, setOpenMinCart] = useContext(minCartContext);
     const [minCartBtnCount, setMinCartBtnCount] = useContext(minCarBtnContext);
 
@@ -18,7 +18,6 @@ const Home = () => {
             .then(res => setProducts(res.data))
     }, [])
 
-//i CANT BELEAVE THIS HAPPENED
     //LocalStorage start
 
     const [cart, setCart] = useState([]);
