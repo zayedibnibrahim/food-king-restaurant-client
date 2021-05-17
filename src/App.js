@@ -17,16 +17,13 @@ import Shipment from './Components/Shipment/Shipment';
 import ThankYouPage from './Components/ThankYouPage/ThankYouPage';
 
 export const userContext = createContext();
-export const minCartContext = createContext();
 export const minCarBtnContext = createContext();
 function App() {
   const [loggedInUser, setLoggedInUser] = useState({})
-  const [openMinCart, setOpenMinCart] = useState(false)
   const [minCartBtnCount, setMinCartBtnCount] = useState([])
 
   return (
     <userContext.Provider value={[loggedInUser, setLoggedInUser]}>
-      <minCartContext.Provider value={[openMinCart, setOpenMinCart]}>
       <minCarBtnContext.Provider value={[minCartBtnCount, setMinCartBtnCount]}>
         <Router>
           <Header></Header>
@@ -34,22 +31,22 @@ function App() {
             <Route exact path="/">
               <Home />
             </Route>
-            <Route path="/orders">
+            <Route exact path="/orders">
               <Orders></Orders>
             </Route>
-            <PrivateRoute path="/admin">
+            <PrivateRoute exact path="/admin">
               <Admin></Admin>
             </PrivateRoute>
-            <PrivateRoute path="/editProduct">
+            <PrivateRoute exact path="/editProduct">
               <EditProduct></EditProduct>
             </PrivateRoute>
-            <Route path="/login">
+            <Route exact path="/login">
               <Login></Login>
             </Route>
-            <PrivateRoute path="/shipment">
+            <PrivateRoute exact path="/shipment">
               <Shipment></Shipment>
             </PrivateRoute>
-            <PrivateRoute path="/thankyoupage">
+            <PrivateRoute exact path="/thankyoupage">
               <ThankYouPage></ThankYouPage>
             </PrivateRoute>
             <Route path="*">
@@ -58,7 +55,6 @@ function App() {
           </Switch>
         </Router>
         </minCarBtnContext.Provider>
-      </minCartContext.Provider>
     </userContext.Provider>
   );
 }

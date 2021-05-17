@@ -22,18 +22,3 @@
     font-weight: 400;
     cursor: pointer;
 }
-.mini-cart button{
-    background-color: darkseagreen;
-}
-/* .header-bar{
-    position: relative;
-}
-.floating-cart{
-    position: absolute;
-    padding: 10px;
-    border: 1px solid #000;
-    right: 33px;
-    z-index: 9;
-    top: 72px;
-    width: 450px;
-} */

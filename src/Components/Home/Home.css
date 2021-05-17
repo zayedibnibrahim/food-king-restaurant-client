@@ -1,14 +1,9 @@
 .food-items{
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 30px;
     transition: .5s all;
-    background-color: #dff9fb;
+    background-color: #EBEDF3;
     padding: 10px;
 }
 @media (max-width: 512px){
-    .food-items{
-        grid-template-columns: repeat(1, 1fr);
-    }
     .nav-menu a{
         padding-left: 7px !important;
         padding-right: 7px !important;
@@ -18,6 +13,9 @@
     margin: 0 10px;
 }
 .cart-items{
-    background-color: #dff9fb;
+    background-color: #EBEDF3;
     padding: 10px;
+}
+.category{
+    background-color: #EBEDF3;
 }

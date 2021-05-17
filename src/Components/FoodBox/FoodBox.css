@@ -1,10 +1,11 @@
-.buy-now-btn{
+.add-to-cart-btn{
     border: none;
-    color: #fff;
-    background-color: rebeccapurple;
-    padding: 15px;
-    border-radius: 4px;
-    font-size: small;
+    color: #000;
+    font-size: 25px;
+    background-color: transparent;
+}
+.item-image img{
+    width: 60px;
 }
 .price h5{
     color: black;
