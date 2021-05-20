@@ -6,7 +6,7 @@ const AddCategory = () => {
     const [categoryList, setCategoryList] = useState([])
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const onSubmit = data => {
-        axios.post('http://localhost:4200/addCategoryDb', data)
+        axios.post('https://apple-sundae-00069.herokuapp.com/addCategoryDb', data)
             .then(res => {
                 if (res.data) {
                     reset()
@@ -17,7 +17,7 @@ const AddCategory = () => {
 
     //Load Category
     const loadCategory = async() => {
-        await axios.get('http://localhost:4200/allCategory')
+        await axios.get('https://apple-sundae-00069.herokuapp.com/allCategory')
             .then(res => {
                 setCategoryList(res.data)
             })

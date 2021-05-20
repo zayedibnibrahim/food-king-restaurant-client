@@ -16,7 +16,7 @@ const Home = () => {
 
     //Show data at home
     // useEffect(() => {
-    //     axios.get('http://localhost:4200/allproduct')
+    //     axios.get('https://apple-sundae-00069.herokuapp.com/allproduct')
     //         .then(res => setProducts(res.data))
     // }, [])
 
@@ -105,7 +105,7 @@ const Home = () => {
     };
     //Load Category
     const loadCategory = async () => {
-        await axios.get('http://localhost:4200/allCategory')
+        await axios.get('https://apple-sundae-00069.herokuapp.com/allCategory')
             .then(res => {
                 setCategoryList(res.data)
             })
@@ -119,7 +119,7 @@ const Home = () => {
     }
     //get product by category
     useEffect(() => {
-        axios.post('http://localhost:4200/productByCategory', {catId : takeCategoryId})
+        axios.post('https://apple-sundae-00069.herokuapp.com/productByCategory', {catId : takeCategoryId})
             .then(res => {
                 setProducts(res.data)
             })
