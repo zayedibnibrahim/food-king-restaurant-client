@@ -1,0 +1,12 @@
+.left-side-bar{
+    background-color: #74b9ff;
+    height: 100vh;
+    
+}
+.left-side-bar a{
+    text-decoration: none;
+}
+.sidebar-nav{
+    padding-top: 20px;
+    padding-left: 20px;
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getDatabaseCart } from '../../utility/databaseManager';
 import './Orders.css'
 import { useHistory } from 'react-router';
+import axios from 'axios';
 const Orders = () => {
 
     //Handle Proceed
@@ -18,24 +19,28 @@ const Orders = () => {
 
         total = total + fProduct.price * fProduct.quantity || 1;
     }
+    
+    //from local storage
     useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        fetch('https://apple-sundae-00069.herokuapp.com/productsByKeys', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(productKeys)
-        })
-            .then(res => res.json())
-            .then(data => {
-                const cartProducts = productKeys.map(key => {
-                    const product = data.find(pd => pd.key === key);
-                    product.quantity = savedCart[key];
-                    return product;
-                });
-                setOrder(cartProducts);
+        axios.post('https://apple-sundae-00069.herokuapp.com/productsByKeys', productKeys)
+            .then(res => {
+                if (res.data.length > 0) {
+                    const previousCart = productKeys.map(pdKey => {
+                        let getProduct = res.data.find(pd => pd._id === pdKey)
+
+                        getProduct.quantity = savedCart[pdKey];
+                        return getProduct;
+                    })
+                    setOrder(previousCart)
+                    
+                }
             })
+
     }, [])
+
+    //from local storage
     return (
         <div className="container">
             <h2>Checkout</h2>

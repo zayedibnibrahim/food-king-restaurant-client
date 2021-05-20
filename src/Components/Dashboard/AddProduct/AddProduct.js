@@ -1,26 +1,26 @@
-import { Link } from 'react-router-dom';
-import './Admin.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faPlus, faAlignRight } from '@fortawesome/free-solid-svg-icons'
+import './AddProduct.css'
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-import { useState } from 'react';
-const Admin = () => {
+import { useEffect, useState } from 'react';
+import Sidebar from '../Sidebar/Sidebar';
+
+const AddProduct = () => {
+    const [categoryList, setCategoryList] = useState([])
     const [imageUrl, setImageUrl] = useState(null);
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const onSubmit = data => {
         const toBeAddedProductData = {
             name: data.name,
             price: data.price,
             weight: data.weight,
             image: imageUrl,
-            key: Math.floor(Math.random() * 100000) +""
+            categoryId: data.category
         }
         axios.post('https://apple-sundae-00069.herokuapp.com/addproductdb', toBeAddedProductData)
             .then(result => {
-                if (result) {
+                if (result.data) {
                     alert('Product Added Successfully.')
-                    
+                    reset()
                 }
             })
     };
@@ -36,48 +36,51 @@ const Admin = () => {
                 setImageUrl(result.data.data.display_url)
             })
     }
+    //Load Category
+    const loadCategory = async () => {
+        await axios.get('http://localhost:4200/allCategory')
+            .then(res => {
+                setCategoryList(res.data)
+            })
+    }
+    useEffect(() => {
+        loadCategory()
+    }, [])
     return (
-        <div className="container add-product">
+        <div className="container add-product mt-5">
             <div className="row">
-                <div className="left-side-bar col-md-3">
-                    <div className="sidebar-nav">
-                        <h3 className="mb-5"><FontAwesomeIcon icon={faAlignRight} /> Manage Product</h3>
-                        <Link to="/admin">
-                            <h5><FontAwesomeIcon icon={faPlus} /> Add Product</h5>
-                        </Link>
-                        <br />
-                        <Link to="/editProduct">
-                            <h5><FontAwesomeIcon icon={faEdit} /> Edit Product</h5>
-                        </Link>
-                    </div>
-                </div>
+                <Sidebar></Sidebar>
                 <div className="right-side-bar col-md-9">
                     <h3 className="mb-5"> Add Product</h3>
                     <div className="product-form">
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="row">
                                 <div className="col-md-6">
-                                    <input type="text" {...register("name", { required: true })} placeholder="Product Name" />
+                                    <input className="form-control" type="text" {...register("name", { required: true })} placeholder="Product Name" />
                                     {errors.name && <span>This field is required</span>}
                                 </div>
                                 <div className="col-md-6">
-                                    <input type="number" {...register("weight", { required: true })} placeholder="Weight(gm)" />
+                                    <input className="form-control" type="number" {...register("weight", { required: true })} placeholder="Weight(gm)" />
                                     {errors.weight && <span>This field is required</span>}
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-md-6">
-                                    <input type="number" {...register("price", { required: true })} placeholder="Price(৳)" />
+                                    <input className="form-control" type="number" {...register("price", { required: true })} placeholder="Price(৳)" />
                                     {errors.price && <span>This field is required</span>}
                                 </div>
                                 <div className="col-md-6">
-                                    <input type="file" {...register("image", { required: true })} onChange={uploadImageHandler} />
+                                    <input className="form-control" type="file" {...register("image", { required: true })} onChange={uploadImageHandler} />
                                     {errors.image && <span>This field is required</span>}
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-md-6">
-
+                                    <select {...register("category", { required: true })}>
+                                        {
+                                            categoryList.map(ctl => <option value={ctl._id}>{ctl.category}</option>)
+                                        }
+                                    </select>
                                 </div>
                                 <div className="col-md-6">
                                     <input type="submit" value="Submit" />
@@ -91,4 +94,4 @@ const Admin = () => {
     );
 };
 
-export default Admin;
+export default AddProduct;

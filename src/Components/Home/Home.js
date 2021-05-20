@@ -8,33 +8,30 @@ import './Home.css';
 import SidebarCart from './SidebarCart/SidebarCart';
 
 const Home = () => {
+
+    const [takeCategoryId, setTakeCategoryId] = useState('60a59b4c2ab1ca1e007d8dcb')
     const [minCartBtnCount, setMinCartBtnCount] = useContext(minCarBtnContext);
+    const [products, setProducts] = useState([])
+    const [categoryList, setCategoryList] = useState([])
 
     //Show data at home
-    const [products, setProducts] = useState([])
-    useEffect(() => {
-        axios.get('https://apple-sundae-00069.herokuapp.com/allproduct')
-            .then(res => setProducts(res.data))
-    }, [])
+    // useEffect(() => {
+    //     axios.get('http://localhost:4200/allproduct')
+    //         .then(res => setProducts(res.data))
+    // }, [])
 
     //LocalStorage start
-
     const [cart, setCart] = useState([]);
     setMinCartBtnCount(cart.length)
+
     useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-
-        fetch('https://apple-sundae-00069.herokuapp.com/productsByKeys', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(productKeys)
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.length > 0) {
+        axios.post('https://apple-sundae-00069.herokuapp.com/productsByKeys', productKeys)
+            .then(res => {
+                if (res.data.length > 0) {
                     const previousCart = productKeys.map(pdKey => {
-                        let getProduct = data.find(pd => pd.key === pdKey)
+                        let getProduct = res.data.find(pd => pd._id === pdKey)
 
                         getProduct.quantity = savedCart[pdKey];
                         return getProduct;
@@ -64,8 +61,8 @@ const Home = () => {
 
     //Add To Cart
     const onAdd = (product) => {
-        const toBeAdded = product.key;
-        const sameProduct = cart.find(pd => pd.key === toBeAdded);
+        const toBeAdded = product._id;
+        const sameProduct = cart.find(pd => pd._id === toBeAdded);
         let count = 1;
         // let newCart;
 
@@ -75,7 +72,7 @@ const Home = () => {
             // newCart = [...cart, sameProduct];
             // setCart(newCart);
             setCart(
-                cart.map(pd => pd.key === toBeAdded ? { ...sameProduct, quantity: sameProduct.quantity + 1 } : pd)
+                cart.map(pd => pd._id === toBeAdded ? { ...sameProduct, quantity: sameProduct.quantity + 1 } : pd)
             )
             count = sameProduct.quantity + 1;
             addToDatabaseCart(toBeAdded, count)
@@ -92,26 +89,52 @@ const Home = () => {
     }
     //Remove FroM Cart
     const onRemove = (product) => {
-        const sameProduct = cart.find(pd => pd.key === product.key);
+        const sameProduct = cart.find(pd => pd._id === product._id);
         if (sameProduct.quantity === 1) {
-            setCart(cart.filter(pd => pd.key !== product.key));
-            removeFromDatabaseCart(product.key)
+            setCart(cart.filter(pd => pd._id !== product._id));
+            removeFromDatabaseCart(product._id)
         } else {
             setCart(
                 cart.map(pd =>
-                    pd.key === product.key ? { ...sameProduct, quantity: sameProduct.quantity - 1 } : pd
+                    pd._id === product._id ? { ...sameProduct, quantity: sameProduct.quantity - 1 } : pd
                 )
             );
             const count = sameProduct.quantity - 1;
-            addToDatabaseCart(product.key, count)
+            addToDatabaseCart(product._id, count)
         }
     };
-
+    //Load Category
+    const loadCategory = async () => {
+        await axios.get('http://localhost:4200/allCategory')
+            .then(res => {
+                setCategoryList(res.data)
+            })
+    }
+    useEffect(() => {
+        loadCategory()
+    }, [])
+    //handle category button
+    const handleCategoryBtn = (id) => {
+        setTakeCategoryId(id)
+    }
+    //get product by category
+    useEffect(() => {
+        axios.post('http://localhost:4200/productByCategory', {catId : takeCategoryId})
+            .then(res => {
+                setProducts(res.data)
+            })
+    }, [takeCategoryId])
     return (
-        <div className="container">
+        <div className="container pt-5">
             <div className="row">
                 <div className="category col-md-3">
                     <h5 className="text-dark">Category</h5>
+                    <div className="category-list d-flex flex-column justify-content-around">
+                        {
+                            categoryList.map(ctl => <button key={ctl._id} onClick={() => handleCategoryBtn(ctl._id)} className="btn mb-2" style={{ backgroundColor: "#D1D8ED" }}>{ctl.category}</button>)
+                        }
+
+                    </div>
                 </div>
                 <div className="col-md-6 food-items d-flex flex-column rounded">
                     {

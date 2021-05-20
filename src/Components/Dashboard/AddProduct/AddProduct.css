@@ -1,27 +1,13 @@
-.left-side-bar{
-    background-color: #74b9ff;
-    height: 100vh;
-    
-}
+
 h5, h3{
     color: #fff;
 }
-.left-side-bar a{
-    text-decoration: none;
-}
-.sidebar-nav{
-    padding-top: 20px;
-    padding-left: 20px;
-}
+
 .add-product{
     border-radius: 6px;
     box-shadow: 0px 0px 35px -3px rgba(130,130,130,1);
 }
-.right-side-bar{
-    background-color: #81ecec;
-    padding-top: 20px;
-    padding-left: 20px;
-}
+
 .product-form form input[type="text"],
 .product-form form input[type="number"]
 {

@@ -8,13 +8,15 @@ import Home from './Components/Home/Home';
 import Header from './Components/Header/Header';
 import NotFoundPage from './Components/NotFoundPage';
 import Orders from './Components/Orders/Orders';
-import Admin from './Components/Admin/Admin';
+import AddProduct from './Components/Dashboard/AddProduct/AddProduct';
 import Login from './Components/Login/Login';
-import EditProduct from './Components/Admin/EditProduct';
+import EditProduct from './Components/Dashboard/EditProduct/EditProduct';
 import { createContext, useState } from 'react';
 import PrivateRoute from './Components/PriveteRoute/PrivateRoute';
 import Shipment from './Components/Shipment/Shipment';
 import ThankYouPage from './Components/ThankYouPage/ThankYouPage';
+import Dashboard from './Components/Dashboard/Dashboard';
+import AddCategory from './Components/Dashboard/AddCategory/AddCategory';
 
 export const userContext = createContext();
 export const minCarBtnContext = createContext();
@@ -34,8 +36,14 @@ function App() {
             <Route exact path="/orders">
               <Orders></Orders>
             </Route>
-            <PrivateRoute exact path="/admin">
-              <Admin></Admin>
+            <PrivateRoute exact path="/dashboard">
+              <Dashboard></Dashboard>
+            </PrivateRoute>
+            <PrivateRoute exact path="/addCategory">
+              <AddCategory></AddCategory>
+            </PrivateRoute>
+            <PrivateRoute exact path="/addProduct">
+              <AddProduct></AddProduct>
             </PrivateRoute>
             <PrivateRoute exact path="/editProduct">
               <EditProduct></EditProduct>
