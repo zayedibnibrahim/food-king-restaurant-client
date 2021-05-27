@@ -16,9 +16,9 @@ const AddProduct = () => {
             image: imageUrl,
             categoryId: data.category
         }
-        axios.post('https://apple-sundae-00069.herokuapp.com/addproductdb', toBeAddedProductData)
+        axios.post('http://localhost:4200/product', toBeAddedProductData)
             .then(result => {
-                if (result.data) {
+                if (result.data.res) {
                     alert('Product Added Successfully.')
                     reset()
                 }

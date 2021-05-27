@@ -13,11 +13,11 @@ const Shipment = () => {
     const onSubmit = data => {
 
         const savedCart = getDatabaseCart();
-        const orderDetails = { ...loggedInUser, products: savedCart, Shipment: data }
+        const orderDetails = { ...loggedInUser, products: savedCart, shipment: data }
 
-        axios.post('https://apple-sundae-00069.herokuapp.com/addOrders', orderDetails)
-            .then(data => {
-                if (data) {
+        axios.post('http://localhost:4200/order', orderDetails)
+            .then(result => {
+                if (result.data.res) {
                     processOrder();
                     history.push('/thankyoupage')
                 }

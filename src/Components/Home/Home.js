@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import { minCarBtnContext } from '../../App';
 import { addToDatabaseCart, getDatabaseCart, removeFromDatabaseCart } from '../../utility/databaseManager';
 import FoodBox from '../FoodBox/FoodBox';
+
 import './Home.css';
 import SidebarCart from './SidebarCart/SidebarCart';
 
@@ -27,11 +28,11 @@ const Home = () => {
     useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        axios.post('https://apple-sundae-00069.herokuapp.com/productsByKeys', productKeys)
-            .then(res => {
-                if (res.data.length > 0) {
+        axios.post('http://localhost:4200/product/idbundle', productKeys)
+            .then(result => {
+                if (result.data.res.length > 0) {
                     const previousCart = productKeys.map(pdKey => {
-                        let getProduct = res.data.find(pd => pd._id === pdKey)
+                        let getProduct = result.data.res.find(pd => pd._id === pdKey)
 
                         getProduct.quantity = savedCart[pdKey];
                         return getProduct;
@@ -104,10 +105,10 @@ const Home = () => {
         }
     };
     //Load Category
-    const loadCategory = async () => {
-        await axios.get('https://apple-sundae-00069.herokuapp.com/allCategory')
-            .then(res => {
-                setCategoryList(res.data)
+    const loadCategory = () => {
+        axios.get('http://localhost:4200/category')
+            .then(result => {
+                setCategoryList(result.data.res)
             })
     }
     useEffect(() => {
@@ -119,9 +120,9 @@ const Home = () => {
     }
     //get product by category
     useEffect(() => {
-        axios.post('https://apple-sundae-00069.herokuapp.com/productByCategory', {catId : takeCategoryId})
-            .then(res => {
-                setProducts(res.data)
+        axios.get(`http://localhost:4200/product/productByCategory/${takeCategoryId}`)
+            .then(result => {
+                setProducts(result.data.res)
             })
     }, [takeCategoryId])
     return (
@@ -147,9 +148,10 @@ const Home = () => {
                             product => <FoodBox
                                 key={product._id}
                                 eachProduct={product}
-                                clickHandler={onAdd} />
+                                addProductClickHandler={onAdd} />
                         )
                     }
+                    
                 </div>
                 <div className='col-md-3' style={{ borderLeft: "1px solid #CECECE" }}>
                     <SidebarCart

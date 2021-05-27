@@ -10,17 +10,18 @@ const EditProduct = () => {
     const [products, setProducts] = useState([])
 
     const loadAddedProduct = async () => {
-        await axios.get('https://apple-sundae-00069.herokuapp.com/allproduct')
-            .then(res => setProducts(res.data))
+        await axios.get('http://localhost:4200/product')
+            .then(res => setProducts(res.data.res))
     }
     useEffect(() => {
         loadAddedProduct();
     }, [])
 
     const deleteHandler = (id) => {
-        axios.delete(`https://apple-sundae-00069.herokuapp.com/delete/${id}`)
-            .then(res => {
-                if (res.data) {
+        axios.delete(`http://localhost:4200/product/${id}`)
+            .then(result => {
+                console.log(result.data)
+                if (result.data.res) {
                     alert('Item Deleted Successfully')
                     loadAddedProduct()
                 }

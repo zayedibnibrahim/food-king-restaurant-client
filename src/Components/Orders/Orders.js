@@ -24,11 +24,11 @@ const Orders = () => {
     useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        axios.post('https://apple-sundae-00069.herokuapp.com/productsByKeys', productKeys)
-            .then(res => {
-                if (res.data.length > 0) {
+        axios.post('http://localhost:4200/product/idbundle', productKeys)
+            .then(result => {
+                if (result.data.res.length > 0) {
                     const previousCart = productKeys.map(pdKey => {
-                        let getProduct = res.data.find(pd => pd._id === pdKey)
+                        let getProduct = result.data.res.find(pd => pd._id === pdKey)
 
                         getProduct.quantity = savedCart[pdKey];
                         return getProduct;
@@ -60,7 +60,7 @@ const Orders = () => {
                             </div>
                         }
                         {
-                            orders.map(order => <tr key={order.key}>
+                            orders.map(order => <tr key={order._id}>
                                 <td>{order.name}</td>
                                 <td>{order.quantity}</td>
                                 <td>{Math.round(order.price * order.quantity).toFixed(2)}৳</td>
