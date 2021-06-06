@@ -4,11 +4,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusSquare } from '@fortawesome/free-regular-svg-icons'
-import { useEffect } from 'react';
-import axios from 'axios';
-import { useState } from 'react';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faPlusSquare } from '@fortawesome/free-regular-svg-icons'
+// import { useEffect } from 'react';
+// import axios from 'axios';
+// import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -78,11 +78,11 @@ const FoodModal = ({ open, handleClose, addProductClickHandler, eachProduct }) =
                         <div className="row">
 
                             <div className="food-img col-md-5">
-                                <img src={image} alt="" className="img-fluid" />
+                                <img src={image.url} alt="" className="img-fluid" />
                             </div>
                             <div className="col-md-7">
                                 <h4>{name}</h4>
-                                <p>Category: {categoryId}</p>
+                                <p>Category: {categoryId.category}</p>
                                 <button onClick={() => addProductClickHandler(eachProduct)} className="add-to-cart-btn-modal">Add To Cart</button>
                             </div>
                         </div>

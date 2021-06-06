@@ -40,7 +40,7 @@ const AddCategory = () => {
                         </form>
                     </div>
                     <div className="row">
-                        <table class="table">
+                        <table className="table">
                             <thead>
                                 <tr>
                                     <th scope="col">No:</th>

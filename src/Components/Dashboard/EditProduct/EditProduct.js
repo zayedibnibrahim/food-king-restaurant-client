@@ -34,34 +34,34 @@ const EditProduct = () => {
                 <div className="right-side-bar col-md-9">
                     <h3 className="mb-5"> Edit Products</h3>
                     <div className="product-list">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Weight</th>
-                                    <th>Price</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    products.length === 0 && <div className="spinner-border text-warning" role="status">
-                                        <span className="visually-hidden"></span>
-                                    </div>
-                                }
-                                {
-                                    products.map(product => <tr key={product._id}>
-                                        <td>{product.name}</td>
-                                        <td>{product.weight}gm</td>
-                                        <td>{product.price}৳</td>
-                                        <td>
-                                            <button><FontAwesomeIcon icon={faEdit} /></button>
-                                            <button onClick={() => deleteHandler(product._id)}><FontAwesomeIcon icon={faTrashAlt} /></button>
-                                        </td>
-                                    </tr>)
-                                }
-                            </tbody>
-                        </table>
+                        {
+                            products.length === 0 ? <div className="spinner-border text-warning" role="status">
+                                <span className="visually-hidden"></span>
+                            </div> : <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Weight</th>
+                                        <th>Price</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        products.map(product => <tr key={product._id}>
+                                            <td>{product.name}</td>
+                                            <td>{product.weight}gm</td>
+                                            <td>{product.price}৳</td>
+                                            <td>
+                                                <button><FontAwesomeIcon icon={faEdit} /></button>
+                                                <button onClick={() => deleteHandler(product._id)}><FontAwesomeIcon icon={faTrashAlt} /></button>
+                                            </td>
+                                        </tr>)
+                                    }
+                                </tbody>
+                            </table>
+                        }
+
                     </div>
                 </div>
             </div>

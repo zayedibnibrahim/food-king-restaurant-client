@@ -22,7 +22,7 @@ const FoodBox = ({eachProduct, addProductClickHandler}) => {
             <div className="col-md-2 item-image">
 
 
-                <img src={image} className="img-fluid" alt="" />
+                <img src={image.url} className="img-fluid" alt="" />
             </div>
             <div className="col-md-6 item-body">
                 <h6 className="item-name">{name}</h6>
