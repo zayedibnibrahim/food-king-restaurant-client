@@ -3,12 +3,17 @@ import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Sidebar from '../Sidebar/Sidebar';
+import Select from 'react-select';
 
 const AddProduct = () => {
+    const [selectedAddon, setSelectedAddon] = useState([])
     const [categoryList, setCategoryList] = useState([])
+    const [addonList, setAddonList] = useState([])
     const [imageUrl, setImageUrl] = useState(null);
     const [previewImg, setPreviewImg] = useState(null)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    
+    
     const onSubmit = data => {
 
         // const toBeAddedProductData = {
@@ -26,24 +31,26 @@ const AddProduct = () => {
         //             reset()
         //         }
         //     })
-        
+
         const toBeAddedProductData = new FormData()
         toBeAddedProductData.append('name', data.name)
         toBeAddedProductData.append('price', data.price)
         toBeAddedProductData.append('weight', data.weight)
         toBeAddedProductData.append('categoryId', data.category)
+        toBeAddedProductData.append('addons', Object.values(selectedAddon))
         toBeAddedProductData.append('image', imageUrl)
-    
-        // axios.post('https://httpbin.org/anything', toBeAddedProductData).then(res=> console.log(res.data.files.image))
-        axios.post('http://localhost:4200/product', toBeAddedProductData)
-            .then(result => {
-                console.log(result)
-                if (result.statusText === "OK") {
-                    alert('Product Added Successfully.')
-                    reset()
-                    setPreviewImg(null)
-                }
-            })
+
+        axios.post('https://httpbin.org/anything', toBeAddedProductData)
+        .then(res => console.log(res))
+        
+        // axios.post('http://localhost:4200/product', toBeAddedProductData)
+        //     .then(result => {
+        //         if (result.statusText === "OK") {
+        //             alert('Product Added Successfully.')
+        //             reset()
+        //             setPreviewImg(null)
+        //         }
+        //     })
     };
 
     //image handler
@@ -80,10 +87,25 @@ const AddProduct = () => {
     useEffect(() => {
         loadCategory()
     }, [])
+
+    //Load Addons
+    const loadAddon = () => {
+        axios.get('http://localhost:4200/addon')
+            .then(result => {
+                setAddonList(result.data.res)
+            })
+    }
+    useEffect(() => {
+        loadAddon()
+    }, [])
+
+    const cakeAddon = []
+    addonList.map(adn => cakeAddon.push({value: adn._id, label: adn.addon}))
+    
     return (
         <div className="container add-product mt-5">
             <div className="row">
-                <Sidebar></Sidebar>
+                <Sidebar heightScale={'100vh'}></Sidebar>
                 <div className="right-side-bar col-md-9">
                     <h3 className="mb-5"> Add Product</h3>
                     <div className="product-form">
@@ -114,15 +136,28 @@ const AddProduct = () => {
                             <div className="row">
                                 <div className="col-md-6">
                                     <select className="form-control" {...register("category", { required: true })}>
+                                        <option>Select a category</option>
                                         {
-                                            categoryList.map((ctl, index) => <option key={index+1} value={ctl._id}>{ctl.category}</option>)
+                                            categoryList.map((ctl, index) => <option key={index + 1} value={ctl._id}>{ctl.category}</option>)
                                         }
                                     </select>
                                     {errors.category && <span>Select a category</span>}
                                 </div>
                                 <div className="col-md-6">
+                                    <Select
+                                   options={cakeAddon}
+                                   isMulti
+                                   isSearchable
+                                   onChange={setSelectedAddon}
+                                    />
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-6"></div>
+                                <div className="col-md-6">
                                     <input type="submit" value="Submit" />
                                 </div>
+
                             </div>
                         </form>
                     </div>

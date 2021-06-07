@@ -5,7 +5,7 @@ const Dashboard = () => {
     return (
         <div className="container dashboard mt-5">
             <div className="row">
-                <Sidebar></Sidebar>
+                <Sidebar heightScale={'100vh'}></Sidebar>
                 <div className="right-side-bar col-md-9">
                     <h3 className="mb-5">Admin Dashboard</h3>
                 </div>

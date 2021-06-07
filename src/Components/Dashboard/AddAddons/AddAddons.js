@@ -2,40 +2,39 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from '../Sidebar/Sidebar';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-const AddCategory = () => {
-    const [categoryList, setCategoryList] = useState([])
+const AddAddons = () => {
+    const [addonList, setAddonList] = useState([])
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const onSubmit = data => {
-        axios.post('http://localhost:4200/category', data)
+        axios.post('http://localhost:4200/addon', data)
             .then(result => {
                 if (result.data.res) {
                     reset()
-                    loadCategory()
+                    loadAddon()
                 }
             })
     };
 
-    //Load Category
-    const loadCategory = () => {
-        axios.get('http://localhost:4200/category')
+    //Load Addons
+    const loadAddon = () => {
+        axios.get('http://localhost:4200/addon')
             .then(result => {
-                setCategoryList(result.data.res)
+                setAddonList(result.data.res)
             })
     }
     useEffect(() => {
-        loadCategory()
+        loadAddon()
     }, [])
     return (
         <div className="container edit-product mt-5">
             <div className="row">
                 <Sidebar heightScale={'auto'}></Sidebar>
-
                 <div className="right-side-bar col-md-9">
-                    <h3 className="mb-5"> Add Category</h3>
+                    <h3 className="mb-5"> Add Addons</h3>
                     <div className="product-form">
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <input className="form-control" {...register("category", { required: true })} placeholder="Category name" />
-                            {errors.category && <span>This field is required</span>}
+                            <input className="form-control" {...register("addon", { required: true })} placeholder="Addons name" />
+                            {errors.addon && <span>This field is required</span>}
                             <input type="submit" />
                         </form>
                     </div>
@@ -44,14 +43,14 @@ const AddCategory = () => {
                             <thead>
                                 <tr>
                                     <th scope="col">No:</th>
-                                    <th scope="col">Category Name</th>
+                                    <th scope="col">Addons Name</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
-                                    categoryList.map((ct, index) => <tr key={ct._id}>
+                                    addonList.map((addon, index) => <tr key={addon._id}>
                                         <th scope="row">{index + 1}</th>
-                                        <td>{ct.category}</td>
+                                        <td>{addon.addon}</td>
                                     </tr>
                                     )
                                 }
@@ -65,4 +64,4 @@ const AddCategory = () => {
     );
 };
 
-export default AddCategory;
+export default AddAddons;

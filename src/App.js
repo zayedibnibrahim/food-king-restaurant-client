@@ -17,6 +17,7 @@ import Shipment from './Components/Shipment/Shipment';
 import ThankYouPage from './Components/ThankYouPage/ThankYouPage';
 import Dashboard from './Components/Dashboard/Dashboard';
 import AddCategory from './Components/Dashboard/AddCategory/AddCategory';
+import AddAddons from './Components/Dashboard/AddAddons/AddAddons';
 
 export const userContext = createContext();
 export const minCarBtnContext = createContext();
@@ -41,6 +42,9 @@ function App() {
             </PrivateRoute>
             <PrivateRoute exact path="/addCategory">
               <AddCategory></AddCategory>
+            </PrivateRoute>
+            <PrivateRoute exact path="/addAddons">
+              <AddAddons></AddAddons>
             </PrivateRoute>
             <PrivateRoute exact path="/addProduct">
               <AddProduct></AddProduct>

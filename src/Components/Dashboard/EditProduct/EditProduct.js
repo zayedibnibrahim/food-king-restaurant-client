@@ -30,7 +30,7 @@ const EditProduct = () => {
     return (
         <div className="container edit-product mt-5">
             <div className="row">
-                <Sidebar></Sidebar>
+                <Sidebar heightScale={'100vh'}></Sidebar>
                 <div className="right-side-bar col-md-9">
                     <h3 className="mb-5"> Edit Products</h3>
                     <div className="product-list">
