@@ -13,8 +13,10 @@ const AddProduct = () => {
     const [previewImg, setPreviewImg] = useState(null)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     
+    const arrayValue = []
+    arrayValue.push(selectedAddon.map(addon => '' + addon.value))
     
-    const onSubmit = data => {
+    const onSubmit = async data => {
 
         // const toBeAddedProductData = {
         //     name: data.name,
@@ -32,30 +34,32 @@ const AddProduct = () => {
         //         }
         //     })
 
-        const toBeAddedProductData = new FormData()
+        const toBeAddedProductData = await new FormData()
         toBeAddedProductData.append('name', data.name)
         toBeAddedProductData.append('price', data.price)
         toBeAddedProductData.append('weight', data.weight)
         toBeAddedProductData.append('categoryId', data.category)
-        toBeAddedProductData.append('addons', Object.values(selectedAddon))
+        toBeAddedProductData.append('addons', arrayValue)
         toBeAddedProductData.append('image', imageUrl)
 
-        axios.post('https://httpbin.org/anything', toBeAddedProductData)
-        .then(res => console.log(res))
-        
-        // axios.post('http://localhost:4200/product', toBeAddedProductData)
-        //     .then(result => {
-        //         if (result.statusText === "OK") {
-        //             alert('Product Added Successfully.')
-        //             reset()
-        //             setPreviewImg(null)
-        //         }
-        //     })
+        // axios.post('https://httpbin.org/anything', toBeAddedProductData)
+        // .then(res => console.log(res))
+        try {
+            const result = await axios.post('http://localhost:4200/product', toBeAddedProductData)
+            const resultOfData = await result.statusText
+            if (result.statusText === "OK") {
+                alert('Product Added Successfully.')
+                reset()
+                setPreviewImg(null)
+            }
+        } catch (error) {
+            console.log(error)
+        }
     };
 
     //image handler
 
-    const uploadImageHandler = e => {
+    const uploadImageHandler = async e => {
         // const imageData = new FormData();
         // imageData.set('key', '41e7c876286549d302ce964e69418b3a');
         // imageData.append('image', e.target.files[0]);
@@ -65,8 +69,8 @@ const AddProduct = () => {
         //         setImageUrl(result.data.data.display_url)
         //     })
 
-        setImageUrl(e.target.files[0])
-        previewImage(e.target.files[0])
+        await setImageUrl(e.target.files[0])
+        await previewImage(e.target.files[0])
     }
 
     //Preview Image
@@ -78,8 +82,8 @@ const AddProduct = () => {
         };
     }
     //Load Category
-    const loadCategory = async () => {
-        await axios.get('http://localhost:4200/category')
+    const loadCategory = () => {
+        axios.get('http://localhost:4200/category')
             .then(result => {
                 setCategoryList(result.data.res)
             })

@@ -46,9 +46,9 @@ function App() {
             <PrivateRoute exact path="/addAddons">
               <AddAddons></AddAddons>
             </PrivateRoute>
-            <PrivateRoute exact path="/addProduct">
+            <Route exact path="/addProduct">
               <AddProduct></AddProduct>
-            </PrivateRoute>
+            </Route>
             <PrivateRoute exact path="/editProduct">
               <EditProduct></EditProduct>
             </PrivateRoute>

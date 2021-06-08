@@ -114,6 +114,7 @@ const Home = () => {
     useEffect(() => {
         loadCategory()
     }, [])
+    
     //handle category button
     const handleCategoryBtn = (id) => {
         setTakeCategoryId(id)
