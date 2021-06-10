@@ -9,15 +9,14 @@ const AddProduct = () => {
     const [selectedAddon, setSelectedAddon] = useState([])
     const [categoryList, setCategoryList] = useState([])
     const [addonList, setAddonList] = useState([])
-    const [imageUrl, setImageUrl] = useState(null);
-    const [previewImg, setPreviewImg] = useState(null)
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    
-    const arrayValue = []
-    arrayValue.push(selectedAddon.map(addon => '' + addon.value))
-    
-    const onSubmit = async data => {
 
+    const arrayValue = []
+    arrayValue.push(selectedAddon.map(addon => addon.value))
+    console.log(arrayValue)
+
+    const onSubmit = async data => {
+        console.log(data)
         // const toBeAddedProductData = {
         //     name: data.name,
         //     price: data.price,
@@ -25,7 +24,7 @@ const AddProduct = () => {
         //     image: imageUrl,
         //     categoryId: data.category
         // }
-        // axios.post('http://localhost:4200/product', toBeAddedProductData)
+        // axios.post('http://localhost:4200/product', data)
         //     .then(result => {
         //         if (result.data.res) {
         //             alert('Product Added Successfully.')
@@ -34,23 +33,24 @@ const AddProduct = () => {
         //         }
         //     })
 
-        const toBeAddedProductData = await new FormData()
-        toBeAddedProductData.append('name', data.name)
-        toBeAddedProductData.append('price', data.price)
-        toBeAddedProductData.append('weight', data.weight)
-        toBeAddedProductData.append('categoryId', data.category)
-        toBeAddedProductData.append('addons', arrayValue)
-        toBeAddedProductData.append('image', imageUrl)
+
 
         // axios.post('https://httpbin.org/anything', toBeAddedProductData)
         // .then(res => console.log(res))
         try {
+            const toBeAddedProductData = new FormData()
+            toBeAddedProductData.append('name', data.name)
+            toBeAddedProductData.append('price', data.price)
+            toBeAddedProductData.append('weight', data.weight)
+            toBeAddedProductData.append('categoryId', data.category)
+            toBeAddedProductData.append('addon', arrayValue)
+            toBeAddedProductData.append('image', data.image[0])
+
             const result = await axios.post('http://localhost:4200/product', toBeAddedProductData)
-            const resultOfData = await result.statusText
             if (result.statusText === "OK") {
                 alert('Product Added Successfully.')
                 reset()
-                setPreviewImg(null)
+                // setPreviewImg(null)
             }
         } catch (error) {
             console.log(error)
@@ -59,28 +59,27 @@ const AddProduct = () => {
 
     //image handler
 
-    const uploadImageHandler = async e => {
-        // const imageData = new FormData();
-        // imageData.set('key', '41e7c876286549d302ce964e69418b3a');
-        // imageData.append('image', e.target.files[0]);
-        // // axios.post('https://httpbin.org/anything', imageData).then(res=> console.log(res))
-        // axios.post('https://api.imgbb.com/1/upload', imageData)
-        //     .then(result => {
-        //         setImageUrl(result.data.data.display_url)
-        //     })
+    // const uploadImageHandler = e => {
+    //     // const imageData = new FormData();
+    //     // imageData.set('key', '41e7c876286549d302ce964e69418b3a');
+    //     // imageData.append('image', e.target.files[0]);
+    //     // // axios.post('https://httpbin.org/anything', imageData).then(res=> console.log(res))
+    //     // axios.post('https://api.imgbb.com/1/upload', imageData)
+    //     //     .then(result => {
+    //     //         setImageUrl(result.data.data.display_url)
+    //     //     })
 
-        await setImageUrl(e.target.files[0])
-        await previewImage(e.target.files[0])
-    }
+    //     setImageUrl(e.target.files[0])
+    // }
 
     //Preview Image
-    const previewImage = (img) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(img);
-        reader.onloadend = () => {
-            setPreviewImg(reader.result);
-        };
-    }
+    // const previewImage = (e) => {
+    //     const reader = new FileReader();
+    //     reader.readAsDataURL(e.target.files[0]);
+    //     reader.onloadend = () => {
+    //         setPreviewImg(reader.result);
+    //     };
+    // }
     //Load Category
     const loadCategory = () => {
         axios.get('http://localhost:4200/category')
@@ -102,10 +101,8 @@ const AddProduct = () => {
     useEffect(() => {
         loadAddon()
     }, [])
-
     const cakeAddon = []
-    addonList.map(adn => cakeAddon.push({value: adn._id, label: adn.addon}))
-    
+    addonList.map(adn => cakeAddon.push({ value: adn._id, label: adn.addon }))
     return (
         <div className="container add-product mt-5">
             <div className="row">
@@ -130,11 +127,12 @@ const AddProduct = () => {
                                     {errors.price && <span>This field is required</span>}
                                 </div>
                                 {/* <div className="col-md-6">
-                                    <input className="form-control" type="file" {...register("image", { required: true })} onChange={uploadImageHandler} />
+                                    <input className="form-control" type="file" {...register("image", { required: true })} />
                                     {errors.image && <span>This field is required</span>}
                                 </div> */}
                                 <div className="col-md-6">
-                                    <input className="form-control" type="file" name="image" onChange={uploadImageHandler} />
+                                    <input className="form-control" type="file" {...register("image", { required: true })} />
+                                    {errors.image && <span>This field is required</span>}
                                 </div>
                             </div>
                             <div className="row">
@@ -149,10 +147,10 @@ const AddProduct = () => {
                                 </div>
                                 <div className="col-md-6">
                                     <Select
-                                   options={cakeAddon}
-                                   isMulti
-                                   isSearchable
-                                   onChange={setSelectedAddon}
+                                        options={cakeAddon}
+                                        isMulti
+                                        isSearchable
+                                        onChange={setSelectedAddon}
                                     />
                                 </div>
                             </div>
@@ -164,11 +162,6 @@ const AddProduct = () => {
 
                             </div>
                         </form>
-                    </div>
-                    <div>
-                        {
-                            previewImg && <img src={previewImg} className="w-25 img-fluid" alt="" />
-                        }
                     </div>
                 </div>
             </div>
