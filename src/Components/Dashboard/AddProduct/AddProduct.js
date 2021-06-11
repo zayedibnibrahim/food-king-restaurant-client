@@ -40,8 +40,8 @@ const AddProduct = () => {
         try {
             const toBeAddedProductData = new FormData()
             toBeAddedProductData.append('name', data.name)
+            toBeAddedProductData.append('stock', data.stock)
             toBeAddedProductData.append('price', data.price)
-            toBeAddedProductData.append('weight', data.weight)
             toBeAddedProductData.append('categoryId', data.category)
             toBeAddedProductData.append('addon', arrayValue)
             toBeAddedProductData.append('image', data.image[0])
@@ -50,6 +50,7 @@ const AddProduct = () => {
             if (result.statusText === "OK") {
                 alert('Product Added Successfully.')
                 reset()
+                setSelectedAddon([])
                 // setPreviewImg(null)
             }
         } catch (error) {
@@ -117,8 +118,10 @@ const AddProduct = () => {
                                     {errors.name && <span>This field is required</span>}
                                 </div>
                                 <div className="col-md-6">
-                                    <input className="form-control" type="number" {...register("weight", { required: true })} placeholder="Weight(gm)" />
-                                    {errors.weight && <span>This field is required</span>}
+                                    <select className="form-control" {...register("stock", { required: true })}>
+                                        <option value="inStock">In Stock</option>
+                                        <option value="outOfStock">Out Of Stock</option>
+                                    </select>
                                 </div>
                             </div>
                             <div className="row">

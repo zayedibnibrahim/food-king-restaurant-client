@@ -56,7 +56,8 @@ Fade.propTypes = {
 };
 
 const FoodModal = ({ open, handleClose, addProductClickHandler, eachProduct }) => {
-    const { name, price, image, categoryId } = eachProduct;
+    const { name, price, image, categoryId, addon } = eachProduct;
+    console.log(addon)
     const classes = useStyles();
 
     return (
@@ -82,7 +83,11 @@ const FoodModal = ({ open, handleClose, addProductClickHandler, eachProduct }) =
                             </div>
                             <div className="col-md-7">
                                 <h4>{name}</h4>
+                                <h4>${price}</h4>
                                 <p>Category: {categoryId.category}</p>
+                                <p>Addons: {
+                                    addon.map(adn => <ul><li key={adn._id}>{adn.addon}</li></ul>)
+                                    }</p>
                                 <button onClick={() => addProductClickHandler(eachProduct)} className="add-to-cart-btn-modal">Add To Cart</button>
                             </div>
                         </div>
